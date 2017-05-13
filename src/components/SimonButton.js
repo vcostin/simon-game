@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 class SimonButton extends Component {
   constructor(props) {
@@ -14,9 +14,18 @@ class SimonButton extends Component {
     this.props.onButtonClickAction(this.props.soundId);
   }
 
+  isPlaying() {
+    return this.props.soundId === this.props.currentSoundId;
+  }
+
   render() {
     return (<div>
-      <button onClick={this.handlePlaySound} style={{ backgroundColor: this.props.backgroud }}>PLAY!!!</button>
+      <button
+        onClick={this.handlePlaySound}
+        style={{ backgroundColor: this.props.background }}
+        className={this.isPlaying() ? 'active' : ''}
+      >PLAY!!!
+      </button>
     </div>);
   }
 }

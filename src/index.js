@@ -1,13 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
+import { Provider } from 'react-redux';
+import store from'./store';
 
 import Root from './containers/Root';
 
 const render = (Component) => {
   ReactDOM.render(
     <AppContainer>
-      <Component />
+      <Provider store={store}>
+        <Component />
+      </Provider>
     </AppContainer>,
     document.getElementById('root'),
   );
@@ -16,5 +20,7 @@ const render = (Component) => {
 render(Root);
 
 if (module.hot) {
-  module.hot.accept('./containers/Root', () => { render(Root); });
+  module.hot.accept('./containers/Root', () => {
+    render(Root);
+  });
 }
