@@ -107,15 +107,15 @@ class SimonDevice extends Component {
   }
 }
 
-SimonDevice.PropTypes = {
-  simonOrder: PropTypes.array,
-  simonOrderIndex: PropTypes.number,
-  currentSoundId: PropTypes.number,
-  increaseSimonIndex: PropTypes.func,
-  resetSimonIndex: PropTypes.func,
-  currentPlaying: PropTypes.func,
-  addToSequence: PropTypes.func,
-  resetSequence: PropTypes.func,
+SimonDevice.propTypes = {
+  simonOrder: PropTypes.arrayOf(PropTypes.number).isRequired,
+  simonOrderIndex: PropTypes.number.isRequired,
+  currentSoundId: PropTypes.number.isRequired,
+  increaseSimonIndex: PropTypes.func.isRequired,
+  resetSimonIndex: PropTypes.func.isRequired,
+  currentPlaying: PropTypes.func.isRequired,
+  addToSequence: PropTypes.func.isRequired,
+  resetSequence: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {

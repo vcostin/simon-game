@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class SimonButton extends Component {
   constructor(props) {
@@ -29,5 +30,14 @@ class SimonButton extends Component {
     </div>);
   }
 }
+
+SimonButton.propTypes = {
+  audio: PropTypes.instanceOf(Audio).isRequired,
+  background: PropTypes.string.isRequired,
+  soundId: PropTypes.number.isRequired,
+  currentSoundId: PropTypes.number.isRequired,
+  onButtonClickAction: PropTypes.func.isRequired,
+
+};
 
 export default SimonButton;

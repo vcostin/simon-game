@@ -14,5 +14,8 @@
         ]
       }
     ]
+  },
+  "globals": {
+    "Audio": true
   }
 }
