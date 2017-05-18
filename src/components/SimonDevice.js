@@ -9,6 +9,9 @@ import {
   resetSimonIndex,
   currentPlaying,
   addToSequence,
+  repeatSequence,
+  checkRepeatSequence,
+  startPlaySequence,
 } from '../actions/simonActions';
 
 const sounds = [
@@ -28,9 +31,6 @@ const simonRand = () => Math.floor(Math.random() * sounds.length) + 1;
 class SimonDevice extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isPlaying: false,
-    };
     this.playTimer = 0;
     this.lastSoundTimer = 0;
     this.handleButtonClickAction = this.handleButtonClickAction.bind(this);
@@ -42,7 +42,7 @@ class SimonDevice extends Component {
   }
 
   handleButtonClickAction(soundId) {
-    console.log(soundId);
+    this.props.repeatSequence(this.props.sequenceOrder + 1, soundId);
   }
 
   playSimonSequence() {
@@ -50,6 +50,7 @@ class SimonDevice extends Component {
     if (!this.props.simonOrder.length) {
       this.addToSequence();
     }
+    this.props.startPlaySequence();
     clearTimeout(this.lastSoundTimer);
     this.playTimer = setInterval(this.playNext, 1000);
   }
@@ -85,6 +86,14 @@ class SimonDevice extends Component {
   }
 
   render() {
+    let answerCheck = '';
+    if (this.props.isCorrect === true) {
+      answerCheck = 'Correct!';
+    }
+    if (this.props.isCorrect === false) {
+      answerCheck = 'Incorrect!';
+    }
+
     return (
       <div>
         <h1>Hit a button for sound</h1>
@@ -92,6 +101,9 @@ class SimonDevice extends Component {
         <button onClick={this.stopPlaySequence}>Stop Sequence</button>
         <button onClick={this.addToSequence}>Add to sequence</button>
         <button onClick={this.resetSequence}>Reset sequence</button>
+        <div className="answer-check">
+          {answerCheck}
+        </div>
         {sounds.map(sound => (
           <SimonButton
             onButtonClickAction={this.handleButtonClickAction}
@@ -110,19 +122,29 @@ class SimonDevice extends Component {
 SimonDevice.propTypes = {
   simonOrder: PropTypes.arrayOf(PropTypes.number).isRequired,
   simonOrderIndex: PropTypes.number.isRequired,
-  currentSoundId: PropTypes.number.isRequired,
+  currentSoundId: PropTypes.number,
+  sequenceOrder: PropTypes.number.isRequired,
+  isCorrect: PropTypes.bool.isRequired,
   increaseSimonIndex: PropTypes.func.isRequired,
   resetSimonIndex: PropTypes.func.isRequired,
   currentPlaying: PropTypes.func.isRequired,
   addToSequence: PropTypes.func.isRequired,
   resetSequence: PropTypes.func.isRequired,
+  repeatSequence: PropTypes.func.isRequired,
+  startPlaySequence: PropTypes.func.isRequired,
+};
+
+SimonDevice.defaultProps = {
+  currentSoundId: null,
 };
 
 function mapStateToProps(state) {
   return {
+    sequenceOrder: state.sequenceOrder,
     simonOrder: state.simonOrder,
     simonOrderIndex: state.simonOrderIndex,
     isPlaying: state.isPlaying,
+    isCorrect: state.isCorrect,
     currentSoundId: state.currentSoundId,
   };
 }
@@ -134,6 +156,9 @@ function mapDispatchToProps(dispatch) {
     resetSimonIndex: bindActionCreators(resetSimonIndex, dispatch),
     currentPlaying: bindActionCreators(currentPlaying, dispatch),
     addToSequence: bindActionCreators(addToSequence, dispatch),
+    repeatSequence: bindActionCreators(repeatSequence, dispatch),
+    checkRepeatSequence: bindActionCreators(checkRepeatSequence, dispatch),
+    startPlaySequence: bindActionCreators(startPlaySequence, dispatch),
   };
 }
 

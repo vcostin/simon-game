@@ -4,6 +4,9 @@ import {
   RESET_SIMON_INDEX,
   CURRENT_PLAYING,
   ADD_SIMON_SEQUENCE,
+  REPEAT_SEQUENCE,
+  CHECK_REPEAT_SEQUENCE,
+  START_PLAY_SEQUENCE,
 } from '../reducers/SimonReducer';
 
 export function currentPlaying(id = 0) {
@@ -35,5 +38,27 @@ export function addToSequence(soundId) {
   return {
     type: ADD_SIMON_SEQUENCE,
     payload: soundId,
+  };
+}
+
+export function repeatSequence(sequenceOrder, sequenceSoundId) {
+  return {
+    type: REPEAT_SEQUENCE,
+    payload: {
+      sequenceOrder,
+      sequenceSoundId,
+    },
+  };
+}
+
+export function checkRepeatSequence() {
+  return {
+    type: CHECK_REPEAT_SEQUENCE,
+  };
+}
+
+export function startPlaySequence() {
+  return {
+    type: START_PLAY_SEQUENCE,
   };
 }

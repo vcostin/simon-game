@@ -35,9 +35,12 @@ SimonButton.propTypes = {
   audio: PropTypes.instanceOf(Audio).isRequired,
   background: PropTypes.string.isRequired,
   soundId: PropTypes.number.isRequired,
-  currentSoundId: PropTypes.number.isRequired,
+  currentSoundId: PropTypes.number,
   onButtonClickAction: PropTypes.func.isRequired,
+};
 
+SimonButton.defaultProps = {
+  currentSoundId: null,
 };
 
 export default SimonButton;

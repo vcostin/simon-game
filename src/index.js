@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
-import store from'./store';
+import store from './store';
+import { AppContainer } from 'react-hot-loader';
 
 import Root from './containers/Root';
 
