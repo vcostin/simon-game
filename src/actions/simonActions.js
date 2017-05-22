@@ -5,7 +5,6 @@ import {
   CURRENT_PLAYING,
   ADD_SIMON_SEQUENCE,
   REPEAT_SEQUENCE,
-  CHECK_REPEAT_SEQUENCE,
   START_PLAY_SEQUENCE,
 } from '../reducers/SimonReducer';
 
@@ -48,12 +47,6 @@ export function repeatSequence(sequenceOrder, sequenceSoundId) {
       sequenceOrder,
       sequenceSoundId,
     },
-  };
-}
-
-export function checkRepeatSequence() {
-  return {
-    type: CHECK_REPEAT_SEQUENCE,
   };
 }
 

@@ -10,9 +10,12 @@ import {
   currentPlaying,
   addToSequence,
   repeatSequence,
-  checkRepeatSequence,
   startPlaySequence,
 } from '../actions/simonActions';
+import {
+  CORRECT,
+  INCORRECT,
+} from '../reducers/SimonReducer';
 
 const sounds = [
   { id: 1, src: 'https://s3.amazonaws.com/freecodecamp/simonSound1.mp3', color: 'green' },
@@ -39,6 +42,16 @@ class SimonDevice extends Component {
     this.playNext = this.playNext.bind(this);
     this.addToSequence = this.addToSequence.bind(this);
     this.resetSequence = this.resetSequence.bind(this);
+  }
+
+  componentDidUpdate() {
+    if (this.props.isCorrect === INCORRECT) {
+      this.playSimonSequence();
+    }
+    if (this.props.isCorrect === CORRECT && this.props.simonOrder.length === this.props.sequenceOrder) {
+      this.addToSequence();
+      this.playSimonSequence();
+    }
   }
 
   handleButtonClickAction(soundId) {
@@ -86,14 +99,6 @@ class SimonDevice extends Component {
   }
 
   render() {
-    let answerCheck = '';
-    if (this.props.isCorrect === true) {
-      answerCheck = 'Correct!';
-    }
-    if (this.props.isCorrect === false) {
-      answerCheck = 'Incorrect!';
-    }
-
     return (
       <div>
         <h1>Hit a button for sound</h1>
@@ -102,7 +107,7 @@ class SimonDevice extends Component {
         <button onClick={this.addToSequence}>Add to sequence</button>
         <button onClick={this.resetSequence}>Reset sequence</button>
         <div className="answer-check">
-          {answerCheck}
+          {this.props.answerCheck}
         </div>
         {sounds.map(sound => (
           <SimonButton
@@ -124,7 +129,9 @@ SimonDevice.propTypes = {
   simonOrderIndex: PropTypes.number.isRequired,
   currentSoundId: PropTypes.number,
   sequenceOrder: PropTypes.number.isRequired,
-  isCorrect: PropTypes.bool.isRequired,
+  // isPlaying: PropTypes.bool,
+  answerCheck: PropTypes.string.isRequired,
+  isCorrect: PropTypes.number.isRequired,
   increaseSimonIndex: PropTypes.func.isRequired,
   resetSimonIndex: PropTypes.func.isRequired,
   currentPlaying: PropTypes.func.isRequired,
@@ -140,6 +147,7 @@ SimonDevice.defaultProps = {
 
 function mapStateToProps(state) {
   return {
+    answerCheck: state.answerCheck,
     sequenceOrder: state.sequenceOrder,
     simonOrder: state.simonOrder,
     simonOrderIndex: state.simonOrderIndex,
@@ -157,7 +165,6 @@ function mapDispatchToProps(dispatch) {
     currentPlaying: bindActionCreators(currentPlaying, dispatch),
     addToSequence: bindActionCreators(addToSequence, dispatch),
     repeatSequence: bindActionCreators(repeatSequence, dispatch),
-    checkRepeatSequence: bindActionCreators(checkRepeatSequence, dispatch),
     startPlaySequence: bindActionCreators(startPlaySequence, dispatch),
   };
 }
