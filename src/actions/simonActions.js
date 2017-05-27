@@ -8,10 +8,10 @@ import {
   START_PLAY_SEQUENCE,
 } from '../reducers/SimonReducer';
 
-export function currentPlaying(id = 0) {
+export function currentPlaying(soundId = 0) {
   return {
     type: CURRENT_PLAYING,
-    payload: id,
+    payload: soundId,
   };
 }
 
@@ -40,12 +40,11 @@ export function addToSequence(soundId) {
   };
 }
 
-export function repeatSequence(sequenceOrder, sequenceSoundId) {
+export function repeatSequence(sequenceOrder) {
   return {
     type: REPEAT_SEQUENCE,
     payload: {
       sequenceOrder,
-      sequenceSoundId,
     },
   };
 }

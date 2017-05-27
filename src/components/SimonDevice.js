@@ -17,6 +17,8 @@ import {
   INCORRECT,
 } from '../reducers/SimonReducer';
 
+const TIMER_TIME = 500;
+
 const sounds = [
   { id: 1, src: 'https://s3.amazonaws.com/freecodecamp/simonSound1.mp3', color: 'green' },
   { id: 2, src: 'https://s3.amazonaws.com/freecodecamp/simonSound2.mp3', color: 'red' },
@@ -46,16 +48,21 @@ class SimonDevice extends Component {
 
   componentDidUpdate() {
     if (this.props.isCorrect === INCORRECT) {
-      this.playSimonSequence();
+      this.playSequenceLag();
     }
     if (this.props.isCorrect === CORRECT && this.props.simonOrder.length === this.props.sequenceOrder) {
       this.addToSequence();
-      this.playSimonSequence();
+      this.playSequenceLag();
     }
   }
 
   handleButtonClickAction(soundId) {
-    this.props.repeatSequence(this.props.sequenceOrder + 1, soundId);
+    this.props.currentPlaying(soundId);
+    this.props.repeatSequence(this.props.sequenceOrder + 1);
+  }
+
+  playSequenceLag() {
+    setTimeout(this.playSimonSequence, TIMER_TIME);
   }
 
   playSimonSequence() {
@@ -65,7 +72,7 @@ class SimonDevice extends Component {
     }
     this.props.startPlaySequence();
     clearTimeout(this.lastSoundTimer);
-    this.playTimer = setInterval(this.playNext, 1000);
+    this.playTimer = setInterval(this.playNext, TIMER_TIME);
   }
 
   playNext() {
@@ -75,7 +82,7 @@ class SimonDevice extends Component {
     this.props.increaseSimonIndex();
     if (this.props.simonOrderIndex === this.props.simonOrder.length) {
       this.stopSequence();
-      this.lastSoundTimer = setTimeout(this.props.currentPlaying, 1000);
+      this.lastSoundTimer = setTimeout(this.props.currentPlaying, TIMER_TIME);
     }
   }
 
@@ -100,7 +107,7 @@ class SimonDevice extends Component {
 
   render() {
     return (
-      <div>
+      <div className="simon-device">
         <h1>Hit a button for sound</h1>
         <button onClick={this.playSimonSequence}>Play Sequence</button>
         <button onClick={this.stopPlaySequence}>Stop Sequence</button>
@@ -109,16 +116,19 @@ class SimonDevice extends Component {
         <div className="answer-check">
           {this.props.answerCheck}
         </div>
-        {sounds.map(sound => (
-          <SimonButton
-            onButtonClickAction={this.handleButtonClickAction}
-            key={sound.id}
-            currentSoundId={this.props.currentSoundId}
-            soundId={sound.id}
-            audio={sound.audio}
-            background={sound.color}
-          />
-        ))}
+        <div className="simon-sound-actions">
+          {sounds.map(sound => (
+            <SimonButton
+              isPlaying={this.props.isPlaying}
+              onButtonClickAction={this.handleButtonClickAction}
+              key={sound.id}
+              currentSoundId={this.props.currentSoundId}
+              soundId={sound.id}
+              audio={sound.audio}
+              background={sound.color}
+            />
+          ))}
+        </div>
       </div>
     );
   }
@@ -129,7 +139,7 @@ SimonDevice.propTypes = {
   simonOrderIndex: PropTypes.number.isRequired,
   currentSoundId: PropTypes.number,
   sequenceOrder: PropTypes.number.isRequired,
-  // isPlaying: PropTypes.bool,
+  isPlaying: PropTypes.bool.isRequired,
   answerCheck: PropTypes.string.isRequired,
   isCorrect: PropTypes.number.isRequired,
   increaseSimonIndex: PropTypes.func.isRequired,

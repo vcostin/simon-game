@@ -16,6 +16,7 @@ const defaultState = {
   sequenceOrder: 0,
   answerCheck: '',
   isCorrect: UNDECIDED,
+  sequenceSoundId: 0,
 };
 
 function SimonOrderReducer(state = defaultState, action) {
@@ -49,11 +50,12 @@ function SimonOrderReducer(state = defaultState, action) {
         isPlaying: false,
       });
     case REPEAT_SEQUENCE: {
-      const isCorrect = state.simonOrder[action.payload.sequenceOrder - 1] === action.payload.sequenceSoundId;
+      // TODO implement this logic in a selector
+      const isCorrect = state.simonOrder[action.payload.sequenceOrder - 1] === state.currentSoundId;
       return Object.assign({}, state, {
         sequenceOrder: action.payload.sequenceOrder,
-        sequenceSoundId: action.payload.sequenceSoundId,
         isCorrect: isCorrect ? CORRECT : INCORRECT,
+        // TODO this is a compute value, implement a selector
         answerCheck: isCorrect ? 'Correct' : 'Incorrect',
       });
     }
@@ -62,6 +64,7 @@ function SimonOrderReducer(state = defaultState, action) {
         sequenceOrder: 0,
         isCorrect: UNDECIDED,
         isPlaying: true,
+        currentSoundId: null,
       });
     default:
       return state;

@@ -3,8 +3,46 @@
 <head>
   <title>Simone Game</title>
   <style>
+    .simon-device {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      flex-wrap: nowrap;
+    }
+
+    .simon-sound-actions {
+      border-radius: 100%;
+      overflow: hidden;
+      display: flex;
+      width: 31.25rem;
+      height: 31.25rem;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      border: 5px solid black;
+    }
+
+    .simon-sound-button {
+      height: 15.625rem;
+      width: 15.625rem;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .simon-sound-button > button {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .simon-sound-button > button:focus {
+      outline: 0;
+    }
+
     .active {
-      border: 3px solid black;
+      opacity: 0.5;
     }
   </style>
 </head>
