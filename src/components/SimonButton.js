@@ -32,8 +32,7 @@ class SimonButton extends Component {
     return (<div className="simon-sound-button">
       <button
         onClick={this.handlePlaySound}
-        style={{ backgroundColor: this.props.background }}
-        className={this.addActiveClass()}
+        className={`${this.props.className} ${this.addActiveClass()}`}
       />
     </div>);
   }
@@ -42,7 +41,7 @@ class SimonButton extends Component {
 SimonButton.propTypes = {
   audio: PropTypes.instanceOf(Audio).isRequired,
   isPlaying: PropTypes.bool.isRequired,
-  background: PropTypes.string.isRequired,
+  className: PropTypes.string.isRequired,
   soundId: PropTypes.number.isRequired,
   currentSoundId: PropTypes.number,
   onButtonClickAction: PropTypes.func.isRequired,

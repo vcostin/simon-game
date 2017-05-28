@@ -8,10 +8,25 @@
       align-items: center;
       flex-direction: column;
       flex-wrap: nowrap;
+      position: relative;
+    }
+
+    .simon-control-actions {
+      z-index: 1;
+      border-radius: 1rem;
+      padding: 1rem;
+      border: .2rem solid #424242;
+      background: white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
     .simon-sound-actions {
       border-radius: 100%;
+      border: .5rem solid #424242;
+      background-color: #424242;
       overflow: hidden;
       display: flex;
       width: 31.25rem;
@@ -19,7 +34,7 @@
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: center;
-      border: 5px solid black;
+      padding: 0;
     }
 
     .simon-sound-button {
@@ -34,11 +49,32 @@
     .simon-sound-button > button {
       width: 100%;
       height: 100%;
-      border: none;
+      padding: 0;
+      border: .5rem solid #424242;
     }
 
     .simon-sound-button > button:focus {
       outline: 0;
+    }
+
+    .first {
+      border-top-left-radius: 100%;
+      background-color: #1de9b6;
+    }
+
+    .second {
+      border-top-right-radius: 100%;
+      background-color: #ff3d00;
+    }
+
+    .third {
+      border-bottom-left-radius: 100%;
+      background-color: #ffea00;
+    }
+
+    .forth {
+      border-bottom-right-radius: 100%;
+      background-color: #0277bd;
     }
 
     .active {
@@ -48,8 +84,9 @@
 </head>
 
 <body>
-  <div id="root"></div>
-  <script src="app.js"></script>
+<h1 style="text-align: center">Hit a button for sound</h1>
+<div id="root"></div>
+<script src="app.js"></script>
 </body>
 
 </html>

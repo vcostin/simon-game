@@ -20,13 +20,13 @@ import {
 const TIMER_TIME = 500;
 
 const sounds = [
-  { id: 1, src: 'https://s3.amazonaws.com/freecodecamp/simonSound1.mp3', color: 'green' },
-  { id: 2, src: 'https://s3.amazonaws.com/freecodecamp/simonSound2.mp3', color: 'red' },
-  { id: 3, src: 'https://s3.amazonaws.com/freecodecamp/simonSound3.mp3', color: 'yellow' },
-  { id: 4, src: 'https://s3.amazonaws.com/freecodecamp/simonSound4.mp3', color: 'blue' },
+  { id: 1, src: 'https://s3.amazonaws.com/freecodecamp/simonSound1.mp3', className: 'first' },
+  { id: 2, src: 'https://s3.amazonaws.com/freecodecamp/simonSound2.mp3', className: 'second' },
+  { id: 3, src: 'https://s3.amazonaws.com/freecodecamp/simonSound3.mp3', className: 'third' },
+  { id: 4, src: 'https://s3.amazonaws.com/freecodecamp/simonSound4.mp3', className: 'forth' },
 ].map((item) => {
-  const { id, color, src } = item;
-  return ({ id, color, audio: new Audio(src) });
+  const { id, src, className } = item;
+  return ({ id, className, audio: new Audio(src) });
 });
 
 // gen a number between 1-4
@@ -77,6 +77,8 @@ class SimonDevice extends Component {
 
   playNext() {
     const findSound = sounds.find(sound => (sound.id === this.props.simonOrder[this.props.simonOrderIndex]));
+    // audio.pause();
+    findSound.audio.currentTime = 0;
     findSound.audio.play();
     this.props.currentPlaying(findSound.id);
     this.props.increaseSimonIndex();
@@ -108,13 +110,14 @@ class SimonDevice extends Component {
   render() {
     return (
       <div className="simon-device">
-        <h1>Hit a button for sound</h1>
-        <button onClick={this.playSimonSequence}>Play Sequence</button>
-        <button onClick={this.stopPlaySequence}>Stop Sequence</button>
-        <button onClick={this.addToSequence}>Add to sequence</button>
-        <button onClick={this.resetSequence}>Reset sequence</button>
-        <div className="answer-check">
-          {this.props.answerCheck}
+        <div className="simon-control-actions">
+          <button onClick={this.playSimonSequence}>Play Sequence</button>
+          <button onClick={this.stopPlaySequence}>Stop Sequence</button>
+          <button onClick={this.addToSequence}>Add to sequence</button>
+          <button onClick={this.resetSequence}>Reset sequence</button>
+          <div className="answer-check">
+            {this.props.answerCheck}
+          </div>
         </div>
         <div className="simon-sound-actions">
           {sounds.map(sound => (
@@ -125,7 +128,7 @@ class SimonDevice extends Component {
               currentSoundId={this.props.currentSoundId}
               soundId={sound.id}
               audio={sound.audio}
-              background={sound.color}
+              className={sound.className}
             />
           ))}
         </div>
