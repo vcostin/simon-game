@@ -16,6 +16,7 @@ import {
   repeatSequence,
   startPlaySequence,
   switchDeviceToggle,
+  strictModeToggle,
 } from '../actions/simonActions';
 import {
   CORRECT,
@@ -49,6 +50,7 @@ class SimonDevice extends Component {
     this.playNext = this.playNext.bind(this);
     this.addToSequence = this.addToSequence.bind(this);
     this.resetSequence = this.resetSequence.bind(this);
+    this.handleStrictMode = this.handleStrictMode.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -56,9 +58,15 @@ class SimonDevice extends Component {
       clearInterval(this.playTimer);
       this.props.resetSimonIndex();
       this.props.resetSequence();
+      if (this.props.isStrictMode) {
+        this.props.strictModeToggle();
+      }
       return;
     }
     if (this.props.isCorrect === INCORRECT) {
+      if (this.props.isStrictMode) {
+        this.resetSequence();
+      }
       this.playSequenceLag();
     }
     if (this.props.isCorrect === CORRECT && this.props.simonOrder.length === this.props.sequenceOrder) {
@@ -121,6 +129,13 @@ class SimonDevice extends Component {
     this.props.resetSequence();
   }
 
+  handleStrictMode() {
+    if (!this.props.isDeviceOn) {
+      return;
+    }
+    this.props.strictModeToggle();
+  }
+
   render() {
     return (
       <div className="simon-device">
@@ -132,11 +147,8 @@ class SimonDevice extends Component {
             <NumbersDisplay displayNumber={this.props.simonOrder.length} />
             <SimonStartButton onStartButtonClick={this.playSimonSequence} />
             <SimonStrictButton
-              isStrictModeActive={false}
-              onToggleStrictMode={() => {
-                // TODO create strict mode action
-                console.log('attempt strict mode');
-              }}
+              isStrictModeActive={this.props.isStrictMode}
+              onToggleStrictMode={this.handleStrictMode}
             />
           </div>
           <div className="simon-control-row">
@@ -145,13 +157,17 @@ class SimonDevice extends Component {
               onHitTheGameSwitch={this.props.switchDeviceToggle}
             />
           </div>
-          <button onClick={this.playSimonSequence}>Play Sequence</button>
-          <button onClick={this.stopPlaySequence}>Stop Sequence</button>
-          <button onClick={this.addToSequence}>Add to sequence</button>
-          <button onClick={this.resetSequence}>Reset sequence</button>
-          <div className="answer-check">
-            {this.props.answerCheck}
+          {/*
+           <div className="dev-section">
+            <button onClick={this.playSimonSequence}>Play Sequence</button>
+            <button onClick={this.stopPlaySequence}>Stop Sequence</button>
+            <button onClick={this.addToSequence}>Add to sequence</button>
+            <button onClick={this.resetSequence}>Reset sequence</button>
+            <div className="answer-check">
+              {this.props.answerCheck}
+            </div>
           </div>
+          */}
         </div>
         <div className="simon-sound-actions">
           {sounds.map(sound => (
@@ -180,6 +196,7 @@ SimonDevice.propTypes = {
   isDeviceOn: PropTypes.bool.isRequired,
   answerCheck: PropTypes.string.isRequired,
   isCorrect: PropTypes.number.isRequired,
+  isStrictMode: PropTypes.bool.isRequired,
   increaseSimonIndex: PropTypes.func.isRequired,
   resetSimonIndex: PropTypes.func.isRequired,
   currentPlaying: PropTypes.func.isRequired,
@@ -188,6 +205,7 @@ SimonDevice.propTypes = {
   repeatSequence: PropTypes.func.isRequired,
   startPlaySequence: PropTypes.func.isRequired,
   switchDeviceToggle: PropTypes.func.isRequired,
+  strictModeToggle: PropTypes.func.isRequired,
 };
 
 SimonDevice.defaultProps = {
@@ -203,6 +221,7 @@ function mapStateToProps(state) {
     simonOrderIndex: state.simonOrderIndex,
     isPlaying: state.isPlaying,
     isCorrect: state.isCorrect,
+    isStrictMode: state.isStrictMode,
     currentSoundId: state.currentSoundId,
   };
 }
@@ -217,6 +236,7 @@ function mapDispatchToProps(dispatch) {
     repeatSequence: bindActionCreators(repeatSequence, dispatch),
     startPlaySequence: bindActionCreators(startPlaySequence, dispatch),
     switchDeviceToggle: bindActionCreators(switchDeviceToggle, dispatch),
+    strictModeToggle: bindActionCreators(strictModeToggle, dispatch),
   };
 }
 

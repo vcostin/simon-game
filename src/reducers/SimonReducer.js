@@ -8,6 +8,7 @@ const CURRENT_PLAYING = 'CURRENT_PLAYING';
 const REPEAT_SEQUENCE = 'REPEAT_SEQUENCE';
 const START_PLAY_SEQUENCE = 'START_PLAY_SEQUENCE';
 const SWITCH_DEVICE_TOGGLE = 'SWITCH_DEVICE_TOGGLE';
+const STRICT_MODE_TOGGLE = 'STRICT_MODE_TOGGLE';
 
 const defaultState = {
   simonOrder: [],
@@ -19,6 +20,7 @@ const defaultState = {
   isCorrect: UNDECIDED,
   sequenceSoundId: 0,
   isDeviceOn: false,
+  isStrictMode: false,
 };
 
 function SimonOrderReducer(state = defaultState, action) {
@@ -72,6 +74,10 @@ function SimonOrderReducer(state = defaultState, action) {
       return Object.assign({}, state, {
         isDeviceOn: !state.isDeviceOn,
       });
+    case STRICT_MODE_TOGGLE:
+      return Object.assign({}, state, {
+        isStrictMode: !state.isStrictMode,
+      });
     default:
       return state;
   }
@@ -88,6 +94,7 @@ export {
   REPEAT_SEQUENCE,
   START_PLAY_SEQUENCE,
   SWITCH_DEVICE_TOGGLE,
+  STRICT_MODE_TOGGLE,
   CORRECT,
   INCORRECT,
   UNDECIDED,

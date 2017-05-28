@@ -12,7 +12,7 @@ class SimonOnOffSwitch extends Component {
     return (
       <div className="switch-button-container">
         <div className="switch-button-wrapper">
-          <button className="switch-button" onClick={this.props.onHitTheGameSwitch} />
+          <button className="action-button switch-button" onClick={this.props.onHitTheGameSwitch} />
         </div>
         <div className="switch-button-caption">{this.deviceStatus()}</div>
       </div>

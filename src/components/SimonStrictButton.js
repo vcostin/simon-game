@@ -10,9 +10,9 @@ class SimonStrictButton extends Component {
   render() {
     return (
       <div className="strict-button-container">
-        <div className={`strict-mode-indicator ${this.isStrictModeActive()}`}/>
+        <div className={`strict-mode-indicator ${this.isStrictModeActive()}`} />
         <div className="strict-button-wrapper">
-          <button className="strict-button" onClick={this.props.onToggleStrictMode}/>
+          <button className="action-button strict-button" onClick={this.props.onToggleStrictMode} />
         </div>
         <div className="strict-button-caption">strict</div>
       </div>

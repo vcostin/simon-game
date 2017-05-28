@@ -32,7 +32,7 @@ class SimonButton extends Component {
     return (<div className="simon-sound-button">
       <button
         onClick={this.handlePlaySound}
-        className={`${this.props.className} ${this.addActiveClass()}`}
+        className={`simon-button ${this.props.className} ${this.addActiveClass()}`}
       />
     </div>);
   }
