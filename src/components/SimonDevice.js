@@ -197,11 +197,10 @@ class SimonDevice extends Component {
 SimonDevice.propTypes = {
   simonOrder: PropTypes.arrayOf(PropTypes.number).isRequired,
   simonOrderIndex: PropTypes.number.isRequired,
-  currentSoundId: PropTypes.number,
+  currentSoundId: PropTypes.number.isRequired,
   sequenceOrder: PropTypes.number.isRequired,
   isPlaying: PropTypes.bool.isRequired,
   isDeviceOn: PropTypes.bool.isRequired,
-  answerCheck: PropTypes.string.isRequired,
   isCorrect: PropTypes.number.isRequired,
   isStrictMode: PropTypes.bool.isRequired,
   hasUserWon: PropTypes.bool.isRequired,
@@ -217,13 +216,8 @@ SimonDevice.propTypes = {
   userWin: PropTypes.func.isRequired,
 };
 
-SimonDevice.defaultProps = {
-  currentSoundId: null,
-};
-
 function mapStateToProps(state) {
   return {
-    answerCheck: state.answerCheck,
     isDeviceOn: state.isDeviceOn,
     sequenceOrder: state.sequenceOrder,
     simonOrder: state.simonOrder,

@@ -43,12 +43,8 @@ SimonButton.propTypes = {
   isPlayable: PropTypes.bool.isRequired,
   className: PropTypes.string.isRequired,
   soundId: PropTypes.number.isRequired,
-  currentSoundId: PropTypes.number,
+  currentSoundId: PropTypes.number.isRequired,
   onButtonClickAction: PropTypes.func.isRequired,
-};
-
-SimonButton.defaultProps = {
-  currentSoundId: null,
 };
 
 export default SimonButton;

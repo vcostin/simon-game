@@ -11,39 +11,39 @@ import {
   USER_WON,
 } from '../reducers/SimonReducer';
 
-export function currentPlaying(soundId = 0) {
+function currentPlaying(soundId = 0) {
   return {
     type: CURRENT_PLAYING,
     payload: soundId,
   };
 }
 
-export function resetSimonIndex() {
+function resetSimonIndex() {
   return {
     type: RESET_SIMON_INDEX,
   };
 }
 
-export function resetSequence() {
+function resetSequence() {
   return {
     type: RESET_SIMON_ORDER,
   };
 }
 
-export function increaseSimonIndex() {
+function increaseSimonIndex() {
   return {
     type: INCREASE_SIMON_INDEX,
   };
 }
 
-export function addToSequence(soundId) {
+function addToSequence(soundId) {
   return {
     type: ADD_SIMON_SEQUENCE,
     payload: soundId,
   };
 }
 
-export function repeatSequence(sequenceOrder) {
+function repeatSequence(sequenceOrder) {
   return {
     type: REPEAT_SEQUENCE,
     payload: {
@@ -52,26 +52,39 @@ export function repeatSequence(sequenceOrder) {
   };
 }
 
-export function startPlaySequence() {
+function startPlaySequence() {
   return {
     type: START_PLAY_SEQUENCE,
   };
 }
 
-export function switchDeviceToggle() {
+function switchDeviceToggle() {
   return {
     type: SWITCH_DEVICE_TOGGLE,
   };
 }
 
-export function strictModeToggle() {
+function strictModeToggle() {
   return {
     type: STRICT_MODE_TOGGLE,
   };
 }
 
-export function userWin() {
+function userWin() {
   return {
     type: USER_WON,
   };
+}
+
+export {
+  currentPlaying,
+  resetSimonIndex,
+  resetSequence,
+  increaseSimonIndex,
+  addToSequence,
+  repeatSequence,
+  startPlaySequence,
+  switchDeviceToggle,
+  strictModeToggle,
+  userWin,
 }

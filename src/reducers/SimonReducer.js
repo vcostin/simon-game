@@ -15,9 +15,8 @@ const defaultState = {
   simonOrder: [],
   simonOrderIndex: 0,
   isPlaying: false,
-  currentSoundId: null,
+  currentSoundId: 0,
   sequenceOrder: 0,
-  answerCheck: '',
   isCorrect: UNDECIDED,
   sequenceSoundId: 0,
   isDeviceOn: false,
@@ -36,7 +35,6 @@ function SimonOrderReducer(state = defaultState, action) {
         simonOrder: [...state.simonOrder, action.payload],
         sequenceOrder: 0,
         isCorrect: UNDECIDED,
-        answerCheck: '',
       });
     case RESET_SIMON_ORDER:
       return Object.assign({}, state, {
@@ -44,7 +42,6 @@ function SimonOrderReducer(state = defaultState, action) {
         simonOrderIndex: 0,
         sequenceOrder: 0,
         isCorrect: UNDECIDED,
-        answerCheck: '',
         hasUserWon: false,
       });
     case INCREASE_SIMON_INDEX:
@@ -62,8 +59,6 @@ function SimonOrderReducer(state = defaultState, action) {
       return Object.assign({}, state, {
         sequenceOrder: action.payload.sequenceOrder,
         isCorrect: isCorrect ? CORRECT : INCORRECT,
-        // TODO this is a compute value, implement a selector
-        answerCheck: isCorrect ? 'Correct' : 'Incorrect',
       });
     }
     case START_PLAY_SEQUENCE:
@@ -71,7 +66,7 @@ function SimonOrderReducer(state = defaultState, action) {
         sequenceOrder: 0,
         isCorrect: UNDECIDED,
         isPlaying: true,
-        currentSoundId: null,
+        currentSoundId: 0,
       });
     case SWITCH_DEVICE_TOGGLE:
       return Object.assign({}, state, {
