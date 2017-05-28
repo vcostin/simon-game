@@ -2,6 +2,7 @@
 
 <head>
   <title>Simone Game</title>
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
   <style>
     .simon-device {
       display: flex;
@@ -13,14 +14,20 @@
 
     .simon-control-actions {
       z-index: 1;
-      border-radius: 1rem;
+      border-radius: 100%;
       padding: 1rem;
-      border: .2rem solid #424242;
+      border: .7rem solid #424242;
       background: white;
+      height: 15.625rem;
+      width: 15.625rem;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+    }
+
+    .simon-control-header {
+      text-align: center;
     }
 
     .simon-sound-actions {
@@ -80,6 +87,89 @@
     .active {
       opacity: 0.5;
     }
+
+    .simon-control-row {
+      font-family: 'Lato', sans-serif;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+    }
+
+    .display-numbers-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .display-numbers {
+      font-size: 2rem;
+      border-radius: .5rem;
+      border: .1rem solid #424242;
+      padding: .2rem .5rem;
+    }
+
+    .display-numbers-caption {
+      text-align: center;
+    }
+
+    .start-button-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .start-button {
+      height: 2.9rem;
+      width: 2.9rem;
+      border-radius: 100%;
+      border: .1rem solid #424242;
+      padding: 0;
+    }
+
+    .start-button-caption {
+      text-align: center;
+    }
+
+    .strict-button-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .strict-button {
+      height: 2.9rem;
+      width: 2.9rem;
+      border-radius: 100%;
+      border: .1rem solid #424242;
+      padding: 0;
+    }
+
+    .strict-button-caption {
+      text-align: center;
+    }
+
+    .switch-button-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .switch-button-wrapper {
+      padding-top: 1rem;
+    }
+
+    .switch-button {
+      height: 1.5rem;
+      width: 2.9rem;
+      border-radius: .5rem;
+      border: .1rem solid #424242;
+      padding: 0;
+    }
+
+    .switch-button-caption {
+      text-align: center;
+    }
+
   </style>
 </head>
 

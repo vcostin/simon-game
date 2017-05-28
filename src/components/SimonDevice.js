@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SimonButton from './SimonButton';
+import NumbersDisplay from './NumbersDisplay';
+import SimonStartButton from './SimonStartButton';
+import SimonStrictButton from './SimonStrictButton';
+import SimonOnOffSwitch from './SimonOnOffSwitch';
 import {
   resetSequence,
   increaseSimonIndex,
@@ -111,6 +115,29 @@ class SimonDevice extends Component {
     return (
       <div className="simon-device">
         <div className="simon-control-actions">
+          <div className="simon-control-header">
+            <h1>Simon<sup>&reg;</sup></h1>
+          </div>
+          <div className="simon-control-row">
+            <NumbersDisplay displayNumber={this.props.simonOrder.length} />
+            <SimonStartButton onStartButtonClick={this.playSimonSequence} />
+            <SimonStrictButton
+              isStrictModeActive={false}
+              onToggleStrictMode={() => {
+                // TODO create strict mode action
+                console.log('attempt strict mode');
+              }}
+            />
+          </div>
+          <div className="simon-control-row">
+            <SimonOnOffSwitch
+              isDeviceOn={false}
+              onHitTheGameSwitch={() => {
+                // TODO create enable/disable game action
+                console.log('attempt to turn on the device');
+              }}
+            />
+          </div>
           <button onClick={this.playSimonSequence}>Play Sequence</button>
           <button onClick={this.stopPlaySequence}>Stop Sequence</button>
           <button onClick={this.addToSequence}>Add to sequence</button>
