@@ -6,6 +6,7 @@ import {
   ADD_SIMON_SEQUENCE,
   REPEAT_SEQUENCE,
   START_PLAY_SEQUENCE,
+  SWITCH_DEVICE_TOGGLE,
 } from '../reducers/SimonReducer';
 
 export function currentPlaying(soundId = 0) {
@@ -52,5 +53,11 @@ export function repeatSequence(sequenceOrder) {
 export function startPlaySequence() {
   return {
     type: START_PLAY_SEQUENCE,
+  };
+}
+
+export function switchDeviceToggle() {
+  return {
+    type: SWITCH_DEVICE_TOGGLE,
   };
 }

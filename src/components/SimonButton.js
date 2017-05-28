@@ -9,7 +9,7 @@ class SimonButton extends Component {
   }
 
   handlePlaySound(e) {
-    if (this.props.isPlaying) {
+    if (!this.props.isPlayable) {
       e.preventDefault();
       return;
     }
@@ -40,7 +40,7 @@ class SimonButton extends Component {
 
 SimonButton.propTypes = {
   audio: PropTypes.instanceOf(Audio).isRequired,
-  isPlaying: PropTypes.bool.isRequired,
+  isPlayable: PropTypes.bool.isRequired,
   className: PropTypes.string.isRequired,
   soundId: PropTypes.number.isRequired,
   currentSoundId: PropTypes.number,

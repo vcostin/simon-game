@@ -7,6 +7,7 @@ const RESET_SIMON_INDEX = 'RESET_SIMON_INDEX';
 const CURRENT_PLAYING = 'CURRENT_PLAYING';
 const REPEAT_SEQUENCE = 'REPEAT_SEQUENCE';
 const START_PLAY_SEQUENCE = 'START_PLAY_SEQUENCE';
+const SWITCH_DEVICE_TOGGLE = 'SWITCH_DEVICE_TOGGLE';
 
 const defaultState = {
   simonOrder: [],
@@ -17,6 +18,7 @@ const defaultState = {
   answerCheck: '',
   isCorrect: UNDECIDED,
   sequenceSoundId: 0,
+  isDeviceOn: false,
 };
 
 function SimonOrderReducer(state = defaultState, action) {
@@ -66,6 +68,10 @@ function SimonOrderReducer(state = defaultState, action) {
         isPlaying: true,
         currentSoundId: null,
       });
+    case SWITCH_DEVICE_TOGGLE:
+      return Object.assign({}, state, {
+        isDeviceOn: !state.isDeviceOn,
+      });
     default:
       return state;
   }
@@ -81,6 +87,7 @@ export {
   CURRENT_PLAYING,
   REPEAT_SEQUENCE,
   START_PLAY_SEQUENCE,
+  SWITCH_DEVICE_TOGGLE,
   CORRECT,
   INCORRECT,
   UNDECIDED,

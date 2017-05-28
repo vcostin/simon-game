@@ -15,6 +15,7 @@ import {
   addToSequence,
   repeatSequence,
   startPlaySequence,
+  switchDeviceToggle,
 } from '../actions/simonActions';
 import {
   CORRECT,
@@ -50,7 +51,13 @@ class SimonDevice extends Component {
     this.resetSequence = this.resetSequence.bind(this);
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    if (prevProps.isDeviceOn && !this.props.isDeviceOn) {
+      clearInterval(this.playTimer);
+      this.props.resetSimonIndex();
+      this.props.resetSequence();
+      return;
+    }
     if (this.props.isCorrect === INCORRECT) {
       this.playSequenceLag();
     }
@@ -70,6 +77,9 @@ class SimonDevice extends Component {
   }
 
   playSimonSequence() {
+    if (!this.props.isDeviceOn) {
+      return;
+    }
     this.stopPlaySequence();
     if (!this.props.simonOrder.length) {
       this.addToSequence();
@@ -131,11 +141,8 @@ class SimonDevice extends Component {
           </div>
           <div className="simon-control-row">
             <SimonOnOffSwitch
-              isDeviceOn={false}
-              onHitTheGameSwitch={() => {
-                // TODO create enable/disable game action
-                console.log('attempt to turn on the device');
-              }}
+              isDeviceOn={this.props.isDeviceOn}
+              onHitTheGameSwitch={this.props.switchDeviceToggle}
             />
           </div>
           <button onClick={this.playSimonSequence}>Play Sequence</button>
@@ -149,7 +156,7 @@ class SimonDevice extends Component {
         <div className="simon-sound-actions">
           {sounds.map(sound => (
             <SimonButton
-              isPlaying={this.props.isPlaying}
+              isPlayable={!this.props.isPlaying && this.props.isDeviceOn && this.props.simonOrder.length !== 0}
               onButtonClickAction={this.handleButtonClickAction}
               key={sound.id}
               currentSoundId={this.props.currentSoundId}
@@ -170,6 +177,7 @@ SimonDevice.propTypes = {
   currentSoundId: PropTypes.number,
   sequenceOrder: PropTypes.number.isRequired,
   isPlaying: PropTypes.bool.isRequired,
+  isDeviceOn: PropTypes.bool.isRequired,
   answerCheck: PropTypes.string.isRequired,
   isCorrect: PropTypes.number.isRequired,
   increaseSimonIndex: PropTypes.func.isRequired,
@@ -179,6 +187,7 @@ SimonDevice.propTypes = {
   resetSequence: PropTypes.func.isRequired,
   repeatSequence: PropTypes.func.isRequired,
   startPlaySequence: PropTypes.func.isRequired,
+  switchDeviceToggle: PropTypes.func.isRequired,
 };
 
 SimonDevice.defaultProps = {
@@ -188,6 +197,7 @@ SimonDevice.defaultProps = {
 function mapStateToProps(state) {
   return {
     answerCheck: state.answerCheck,
+    isDeviceOn: state.isDeviceOn,
     sequenceOrder: state.sequenceOrder,
     simonOrder: state.simonOrder,
     simonOrderIndex: state.simonOrderIndex,
@@ -206,6 +216,7 @@ function mapDispatchToProps(dispatch) {
     addToSequence: bindActionCreators(addToSequence, dispatch),
     repeatSequence: bindActionCreators(repeatSequence, dispatch),
     startPlaySequence: bindActionCreators(startPlaySequence, dispatch),
+    switchDeviceToggle: bindActionCreators(switchDeviceToggle, dispatch),
   };
 }
 
