@@ -7,6 +7,7 @@ import NumbersDisplay from './NumbersDisplay';
 import SimonStartButton from './SimonStartButton';
 import SimonStrictButton from './SimonStrictButton';
 import SimonOnOffSwitch from './SimonOnOffSwitch';
+import WinnMessage from './WinnMessage';
 import {
   resetSequence,
   increaseSimonIndex,
@@ -17,6 +18,7 @@ import {
   startPlaySequence,
   switchDeviceToggle,
   strictModeToggle,
+  userWin,
 } from '../actions/simonActions';
 import {
   CORRECT,
@@ -24,6 +26,7 @@ import {
 } from '../reducers/SimonReducer';
 
 const TIMER_TIME = 500;
+const STEPS_TO_WIN = 20;
 
 const sounds = [
   { id: 1, src: 'https://s3.amazonaws.com/freecodecamp/simonSound1.mp3', className: 'first' },
@@ -70,6 +73,11 @@ class SimonDevice extends Component {
       this.playSequenceLag();
     }
     if (this.props.isCorrect === CORRECT && this.props.simonOrder.length === this.props.sequenceOrder) {
+      if (this.props.simonOrder.length === STEPS_TO_WIN) {
+        this.props.userWin();
+        this.props.currentPlaying();
+        return;
+      }
       this.addToSequence();
       this.playSequenceLag();
     }
@@ -85,7 +93,7 @@ class SimonDevice extends Component {
   }
 
   playSimonSequence() {
-    if (!this.props.isDeviceOn) {
+    if (!this.props.isDeviceOn || this.props.hasUserWon) {
       return;
     }
     this.stopPlaySequence();
@@ -130,7 +138,7 @@ class SimonDevice extends Component {
   }
 
   handleStrictMode() {
-    if (!this.props.isDeviceOn) {
+    if (!this.props.isDeviceOn || this.props.hasUserWon) {
       return;
     }
     this.props.strictModeToggle();
@@ -138,49 +146,48 @@ class SimonDevice extends Component {
 
   render() {
     return (
-      <div className="simon-device">
-        <div className="simon-control-actions">
-          <div className="simon-control-header">
-            <h1>Simon<sup>&reg;</sup></h1>
-          </div>
-          <div className="simon-control-row">
-            <NumbersDisplay displayNumber={this.props.simonOrder.length} />
-            <SimonStartButton onStartButtonClick={this.playSimonSequence} />
-            <SimonStrictButton
-              isStrictModeActive={this.props.isStrictMode}
-              onToggleStrictMode={this.handleStrictMode}
-            />
-          </div>
-          <div className="simon-control-row">
-            <SimonOnOffSwitch
-              isDeviceOn={this.props.isDeviceOn}
-              onHitTheGameSwitch={this.props.switchDeviceToggle}
-            />
-          </div>
-          {/*
-           <div className="dev-section">
-            <button onClick={this.playSimonSequence}>Play Sequence</button>
-            <button onClick={this.stopPlaySequence}>Stop Sequence</button>
-            <button onClick={this.addToSequence}>Add to sequence</button>
-            <button onClick={this.resetSequence}>Reset sequence</button>
-            <div className="answer-check">
-              {this.props.answerCheck}
+      <div>
+        <WinnMessage hasUserWon={this.props.hasUserWon} />
+        <div className="simon-device">
+          <div className="simon-control-actions">
+            <div className="simon-control-row">
+              <div className="simon-control-header">
+                <h1 className="simon-title">Simon<sup>&reg;</sup></h1>
+              </div>
+            </div>
+            <div className="simon-control-row">
+              <NumbersDisplay displayNumber={this.props.simonOrder.length} />
+              <SimonStartButton onStartButtonClick={this.playSimonSequence} />
+              <SimonStrictButton
+                isStrictModeActive={this.props.isStrictMode}
+                onToggleStrictMode={this.handleStrictMode}
+              />
+            </div>
+            <div className="simon-control-row">
+              <SimonOnOffSwitch
+                isDeviceOn={this.props.isDeviceOn}
+                onHitTheGameSwitch={this.props.switchDeviceToggle}
+              />
             </div>
           </div>
-          */}
-        </div>
-        <div className="simon-sound-actions">
-          {sounds.map(sound => (
-            <SimonButton
-              isPlayable={!this.props.isPlaying && this.props.isDeviceOn && this.props.simonOrder.length !== 0}
-              onButtonClickAction={this.handleButtonClickAction}
-              key={sound.id}
-              currentSoundId={this.props.currentSoundId}
-              soundId={sound.id}
-              audio={sound.audio}
-              className={sound.className}
-            />
-          ))}
+          <div className="simon-sound-actions">
+            {sounds.map(sound => (
+              <SimonButton
+                isPlayable={
+                  !this.props.isPlaying &&
+                  this.props.isDeviceOn &&
+                  this.props.simonOrder.length !== 0 &&
+                  !this.props.hasUserWon
+                }
+                onButtonClickAction={this.handleButtonClickAction}
+                key={sound.id}
+                currentSoundId={this.props.currentSoundId}
+                soundId={sound.id}
+                audio={sound.audio}
+                className={sound.className}
+              />
+            ))}
+          </div>
         </div>
       </div>
     );
@@ -197,6 +204,7 @@ SimonDevice.propTypes = {
   answerCheck: PropTypes.string.isRequired,
   isCorrect: PropTypes.number.isRequired,
   isStrictMode: PropTypes.bool.isRequired,
+  hasUserWon: PropTypes.bool.isRequired,
   increaseSimonIndex: PropTypes.func.isRequired,
   resetSimonIndex: PropTypes.func.isRequired,
   currentPlaying: PropTypes.func.isRequired,
@@ -206,6 +214,7 @@ SimonDevice.propTypes = {
   startPlaySequence: PropTypes.func.isRequired,
   switchDeviceToggle: PropTypes.func.isRequired,
   strictModeToggle: PropTypes.func.isRequired,
+  userWin: PropTypes.func.isRequired,
 };
 
 SimonDevice.defaultProps = {
@@ -222,6 +231,7 @@ function mapStateToProps(state) {
     isPlaying: state.isPlaying,
     isCorrect: state.isCorrect,
     isStrictMode: state.isStrictMode,
+    hasUserWon: state.hasUserWon,
     currentSoundId: state.currentSoundId,
   };
 }
@@ -237,6 +247,7 @@ function mapDispatchToProps(dispatch) {
     startPlaySequence: bindActionCreators(startPlaySequence, dispatch),
     switchDeviceToggle: bindActionCreators(switchDeviceToggle, dispatch),
     strictModeToggle: bindActionCreators(strictModeToggle, dispatch),
+    userWin: bindActionCreators(userWin, dispatch),
   };
 }
 

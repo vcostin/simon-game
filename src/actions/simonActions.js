@@ -8,6 +8,7 @@ import {
   START_PLAY_SEQUENCE,
   SWITCH_DEVICE_TOGGLE,
   STRICT_MODE_TOGGLE,
+  USER_WON,
 } from '../reducers/SimonReducer';
 
 export function currentPlaying(soundId = 0) {
@@ -66,5 +67,11 @@ export function switchDeviceToggle() {
 export function strictModeToggle() {
   return {
     type: STRICT_MODE_TOGGLE,
+  };
+}
+
+export function userWin() {
+  return {
+    type: USER_WON,
   };
 }
